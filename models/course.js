@@ -50,6 +50,6 @@ module.exports = (sequelize) => {
               allowNull: false,
           }
       });
-    };
+    }
     return Course;
 }
