@@ -40,7 +40,14 @@ router.get('/courses/:id', asyncHandler( async (req, res) => {
             }
         }
     });
-    res.status(200).json(course);
+
+    //Check if there is a course then send 200, if not then send 404 status code.
+    if(course){
+        res.status(200).json(course);
+    }else{
+        res.status(404).json({ message: "Course not found." });
+    }
+
 }));
 
 router.post('/courses', asyncHandler( async(req, res, next) => {
@@ -61,7 +68,5 @@ router.delete('/courses/:id', asyncHandler( async (req,res) =>{
     await course.destroy();
     res.status(204).end();
 }));
-
-
 
 module.exports = router;
