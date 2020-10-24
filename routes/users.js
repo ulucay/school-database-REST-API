@@ -4,15 +4,52 @@ const { User, Course } = require('../models');
 const bcryptjs = require('bcryptjs');
 const auth = require('basic-auth');
 
+//Authenticator middleware
+const authenticateUser = async (req, res, next) => {
+    let message = null;
 
-const authenticateUser = (req, res, next) => {
     // Parse the user's credentials from the Authorization header.
     const credentials = auth(req);
 
+    //If the user's credentials are available
+    if(credentials){
 
+        //Attempt to retrieve the user from the data by their username
+        const user = await User.findOne({ where: { emailAddress: credentials.name } });
+
+        //If user is available
+        if(user){
+            const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
+
+            //If user is authenticated
+            if(authenticated){
+                req.currentUser = user;
+            }
+            else{
+                message = `Authentication failure for username: ${user.emailAddress}`;
+            }
+
+        }
+        else{
+            message = `User not found for username: ${credentials.name}`;
+        }
+    }
+    else{
+        message = 'Auth header not found';
+    }
+
+    //If there are error messages
+    if(message){
+        console.warn(message);
+
+        // Return a response with a 401 Unauthorized HTTP status code.
+        res.status(401).json({ message: 'Access Denied' });
+    }else{
+        next();
+    }
 };
 
-// async handler for each route
+//Async handler for each route
 function asyncHandler(cb){
     return async(req, res, next) =>{
         try{
@@ -23,10 +60,11 @@ function asyncHandler(cb){
     }
 }
 
-router.get("/users", asyncHandler( async (req,res) =>{
+//Returns the currently authenticated user
+router.get("/users", authenticateUser, asyncHandler( async (req,res) =>{
     const user = await User.findOne({
         where: {
-            id: req.user.id
+            emailAddress: req.currentUser.emailAddress
         },
         attributes: {
             exclude: ["password", "createdAt", "updatedAt"]
@@ -37,21 +75,33 @@ router.get("/users", asyncHandler( async (req,res) =>{
 
 router.post("/users", asyncHandler( async  (req, res, next) => {
 
-   //Get the user from the request body
-   const user = req.body;
+  try{
+      //Get the user from the request body
+      let { firstName, lastName, emailAddress, password } = req.body;
 
-   if(!user.FirstName)
+      //Hash the new user's password
+      if(user.password){
+          user.password = bcryptjs.hashSync(user.password);
+      }
 
-   //Hash the new user's password
-   user.password = bcryptjs.hashSync(user.password);
+      //Create the new user and save it to the database
+      await User.create({firstName, lastName, emailAddress, password});
 
-   //Create the new user and save it to the database
-   User.create(user);
 
-   //Set the status to 201 and end the response
-   res.status(201).end();
+      //Set the status to 201 and end the response
+      res.status(201).location('/').end();
 
-}));
+  }
+  catch(err){
+      if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+          const errors = error.errors.map(err => err.message);
+          res.status(400).json({ errors });
+      } else {
+          throw error;
+      }
+  }
+}
+));
 
 
 module.exports = router;

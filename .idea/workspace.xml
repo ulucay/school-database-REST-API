@@ -12,8 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e75e4a41-2221-4825-a2a0-361b2dc7cba0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/courses.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/courses.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
     </list>
@@ -41,10 +40,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -60,11 +59,13 @@
       <workItem from="1603315083221" duration="4438000" />
       <workItem from="1603459289029" duration="1193000" />
       <workItem from="1603460552990" duration="5927000" />
+      <workItem from="1603501719318" duration="2541000" />
+      <workItem from="1603549405986" duration="6999000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -83,30 +84,31 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="957" y="420" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1603307567010" />
-    <state width="1899" height="282" key="GridCell.Tab.0.bottom" timestamp="1603460541873">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="2533" height="384" key="GridCell.Tab.0.bottom" timestamp="1603509619753">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1899" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1603460541873" />
-    <state width="1250" height="382" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1603151945758" />
-    <state width="1899" height="282" key="GridCell.Tab.0.center" timestamp="1603460541873">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="2533" height="384" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1603509619753" />
+    <state width="2533" height="384" key="GridCell.Tab.0.center" timestamp="1603509619753">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1899" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1603460541873" />
-    <state width="1250" height="382" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1603151945758" />
-    <state width="1899" height="282" key="GridCell.Tab.0.left" timestamp="1603460541873">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="2533" height="384" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1603509619753" />
+    <state width="2533" height="384" key="GridCell.Tab.0.left" timestamp="1603509619753">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1899" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1603460541873" />
-    <state width="1250" height="382" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1603151945758" />
-    <state width="1899" height="282" key="GridCell.Tab.0.right" timestamp="1603460541873">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="2533" height="384" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1603509619753" />
+    <state width="2533" height="384" key="GridCell.Tab.0.right" timestamp="1603509619753">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1899" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1603460541873" />
-    <state width="1250" height="382" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1603151945758" />
-    <state x="461" y="165" key="SettingsEditor" timestamp="1603459759521">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="2533" height="384" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1603509619753" />
+    <state x="615" y="222" key="SettingsEditor" timestamp="1603554689581">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1603459759521" />
+    <state x="615" y="222" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1603554689581" />
     <state x="611" y="238" key="run.anything.popup" timestamp="1603467466040">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

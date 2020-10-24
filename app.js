@@ -20,20 +20,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// test the database connection
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
-    await sequelize.sync();
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-})();
-
-
 // TODO setup your api routes here
-
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
 
@@ -62,6 +49,17 @@ app.use((err, req, res, next) => {
     error: {},
   });
 });
+
+// test the database connection
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    await sequelize.sync();
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
 
 // set our port
 app.set('port', process.env.PORT || 5000);
