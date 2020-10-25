@@ -3,7 +3,7 @@
 // load modules
 const express = require('express');
 const morgan = require('morgan');
-const { sequelize } = require('./models');
+const { sequelize, User, Course } = require('./models');
 const courseRoutes = require('./routes/courses');
 const userRoutes = require('./routes/users');
 

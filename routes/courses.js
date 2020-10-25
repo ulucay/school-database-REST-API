@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { User, Course } = require('../models');
+const bcryptjs = require('bcryptjs');
+const auth = require('basic-auth');
+const { check, validationResult } = require('express-validator/check');
+
 
 //Authenticator middleware
 const authenticateUser = async (req, res, next) => {
@@ -26,7 +30,6 @@ const authenticateUser = async (req, res, next) => {
             else{
                 message = `Authentication failure for username: ${user.emailAddress}`;
             }
-
         }
         else{
             message = `User not found for username: ${credentials.name}`;
@@ -38,8 +41,6 @@ const authenticateUser = async (req, res, next) => {
 
     //If there are error messages
     if(message){
-        console.warn(message);
-
         // Return a response with a 401 Unauthorized HTTP status code.
         res.status(401).json({ message: 'Access Denied' });
     }else{
@@ -95,23 +96,65 @@ router.get('/courses/:id', asyncHandler( async (req, res) => {
 
 }));
 
-router.post('/courses', authenticateUser, asyncHandler( async(req, res, next) => {
-    let course = req.body;
-    course = await Course.create(course);
-    res.status(201).location('/api/courses/' + course.id).end();
+router.post('/courses',
+[
+        check("title")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "title"'),
+        check("description")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "description"'),
+        ],
+        authenticateUser,
+        asyncHandler( async(req, res, next) => {
+            //Check validation result
+            const errors = validationResult(req);
+            //If there is a validation error then send 400 status code and error message
+            if (!errors.isEmpty()) {
+                const errorMessages = errors.array().map((error) => error.msg);
+                return res.status(400).json({ errors: errorMessages });
+            }
+
+            const course = await Course.create(req.body);
+            res.status(201).location(`/courses/${course.id}`).end();
 }));
 
 
-router.put('/courses/:id', authenticateUser, asyncHandler( async (req,res) =>{
-    const course =  await Course.findByPk(req.params.id);
-    await course.update(req.body);
-    res.status(204).end();
+router.put('/courses/:id',
+[
+        check("title")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "title"'),
+        check("description")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "description"'),
+        ],
+        authenticateUser,
+        asyncHandler( async (req,res) =>{
+            //Check validation result
+            const errors = validationResult(req);
+            //If there is a validation error then send 400 status code and error message
+            if (!errors.isEmpty()) {
+                const errorMessages = errors.array().map((error) => error.msg);
+                return res.status(400).json({ errors: errorMessages });
+            }
+        const course =  await Course.findByPk(req.params.id);
+        if (course.userId === req.currentUser.id) {
+            await course.update(req.body);
+            res.status(204).end();
+        } else {
+            res.status(403).end();
+        }
 }));
 
 router.delete('/courses/:id', authenticateUser, asyncHandler( async (req,res) =>{
     const course = await Course.findByPk(req.params.id);
-    await course.destroy();
-    res.status(204).end();
+    if (course.userId === req.currentUser.id) {
+        await course.destroy();
+        res.status(204).end();
+    } else {
+        res.status(403).end();
+    }
 }));
 
 module.exports = router;

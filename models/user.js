@@ -25,7 +25,10 @@ module.exports = (sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         }
-    }, { sequelize});
+    }, {
+        sequelize,
+        indexes: [{unique: true, fields: ['emailAddress']}]
+    });
 
     User.associate = (models) => {
       User.hasMany(models.Course,{

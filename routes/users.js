@@ -3,6 +3,8 @@ const router = express.Router();
 const { User, Course } = require('../models');
 const bcryptjs = require('bcryptjs');
 const auth = require('basic-auth');
+const { check, validationResult } = require('express-validator/check');
+
 
 //Authenticator middleware
 const authenticateUser = async (req, res, next) => {
@@ -73,11 +75,34 @@ router.get("/users", authenticateUser, asyncHandler( async (req,res) =>{
     res.status(200).json(user);
 }));
 
-router.post("/users", asyncHandler( async  (req, res, next) => {
+router.post("/users",
+    [
+        check("firstName")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "first name"'),
+        check("lastName")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "last name"'),
+        check("emailAddress")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "email"'),
+        check("password")
+            .exists({ checkNull: true, checkFalsy: true })
+            .withMessage('Please provide a value for "password"'),
+    ],
+    asyncHandler( async  (req, res, next) => {
 
   try{
-      //Get the user from the request body
-      let { firstName, lastName, emailAddress, password } = req.body;
+      //Check validation result
+      const errors = validationResult(req);
+      //If there is a validation error then send 400 status code and error message
+      if (!errors.isEmpty()) {
+          const errorMessages = errors.array().map((error) => error.msg);
+          return res.status(400).json({ errors: errorMessages });
+      }
+
+      //If validation is okay then , get the user from the request body
+      let user = req.body;
 
       //Hash the new user's password
       if(user.password){
@@ -85,12 +110,10 @@ router.post("/users", asyncHandler( async  (req, res, next) => {
       }
 
       //Create the new user and save it to the database
-      await User.create({firstName, lastName, emailAddress, password});
-
+      await User.create(user);
 
       //Set the status to 201 and end the response
       res.status(201).location('/').end();
-
   }
   catch(err){
       if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
